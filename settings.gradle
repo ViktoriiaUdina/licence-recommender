@@ -1,0 +1,6 @@
+pluginManagement {
+    plugins {
+        id 'com.vaadin' version "${vaadinVersion}"
+    }
+}
+rootProject.name = 'licence-recommender'
