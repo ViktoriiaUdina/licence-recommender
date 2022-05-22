@@ -2,9 +2,7 @@ package com.vika.recommender.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,7 +20,12 @@ public class Document {
     private String example;
 
     @EqualsAndHashCode.Exclude
-    @ManyToMany(mappedBy = "documents", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "Parameter_Document",
+            joinColumns = { @JoinColumn(name = "document_id") },
+            inverseJoinColumns = { @JoinColumn(name = "parameter_id") }
+    )
     private Set<Parameter> parameters;
 
     @Override

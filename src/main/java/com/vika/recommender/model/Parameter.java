@@ -2,7 +2,6 @@ package com.vika.recommender.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
@@ -18,12 +17,12 @@ public class Parameter {
     private String name;
 
     @EqualsAndHashCode.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_id")
     private Parameter parentParameter;
 
     @EqualsAndHashCode.Exclude
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_id")
     private List<Parameter> childParams;
 
@@ -33,7 +32,7 @@ public class Parameter {
     private Category category;
 
     @EqualsAndHashCode.Exclude
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "Parameter_Document",
             joinColumns = { @JoinColumn(name = "parameter_id") },

@@ -4,6 +4,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.treegrid.TreeGrid;
 import com.vika.recommender.view.forms.AbstractForm;
 import net.jodah.typetools.TypeResolver;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,13 +22,17 @@ public abstract class AbstractList<T, F extends AbstractForm<T>> extends Vertica
     abstract Component configureToolbar();
     abstract void configureGrid(Grid<T> grid);
 
-    public AbstractList(JpaRepository<T, Long> repository) {
+    public AbstractList(JpaRepository<T, Long> repository, boolean useTree) {
         this.repository = repository;
         this.entityClass = (Class<T>) TypeResolver.resolveRawArguments(AbstractList.class, getClass())[0];
-        this.grid = new Grid<>(entityClass);
+        if (useTree) {
+            this.grid = new TreeGrid<>(entityClass);
+        } else {
+            this.grid = new Grid<>(entityClass);
+        }
         setSizeFull();
         configureGrid(grid);
-        updateList();
+        updateList(grid);
         add(configureToolbar());
     }
 
@@ -35,7 +40,7 @@ public abstract class AbstractList<T, F extends AbstractForm<T>> extends Vertica
         return repository.findAll();
     }
 
-    protected void updateList() {
+    protected void updateList(Grid<T> grid) {
         grid.setItems(fetchData());
     }
 
@@ -67,13 +72,13 @@ public abstract class AbstractList<T, F extends AbstractForm<T>> extends Vertica
 
     private void saveEntity(AbstractForm.SaveEvent event) {
         repository.save((T)event.getEntity());
-        updateList();
+        updateList(grid);
         closeEditor();
     }
 
     private void deleteEntity(AbstractForm.DeleteEvent event) {
         repository.delete((T)event.getEntity());
-        updateList();
+        updateList(grid);
         closeEditor();
     }
 

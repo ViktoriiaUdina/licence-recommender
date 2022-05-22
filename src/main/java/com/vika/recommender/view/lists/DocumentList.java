@@ -18,7 +18,7 @@ import com.vika.recommender.view.forms.DocumentForm;
 public class DocumentList extends AbstractList<Document, DocumentForm> {
 
     public DocumentList(DocumentRepository repository, ParameterRepository parameterRepository) {
-        super(repository);
+        super(repository, false);
         DocumentForm documentForm = new DocumentForm(parameterRepository);
         documentForm.setWidth("25em");
         add(addForm(documentForm));

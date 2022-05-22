@@ -17,7 +17,7 @@ import com.vika.recommender.view.forms.CategoryForm;
 public class CategoryList extends AbstractList<Category, CategoryForm> {
 
     public CategoryList(CategoryRepository repository) {
-        super(repository);
+        super(repository, false);
         CategoryForm categoryForm = new CategoryForm();
         categoryForm.setWidth("25em");
         add(addForm(categoryForm));
